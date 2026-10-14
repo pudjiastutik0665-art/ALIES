@@ -2,6 +2,7 @@ import React from 'react';
 import { categoriesData } from '../data/categories';
 import Reveal from './Reveal';
 import TiltCard from './TiltCard';
+import { resourceLinks } from '../data/siteData';
 
 export default function Categories() {
   return (
@@ -17,12 +18,22 @@ export default function Categories() {
                 Pilih bidang keahlian dan daftarkan dirimu segera.
               </p>
             </div>
-            <div>
+            <div className="flex flex-wrap gap-3">
               <a
-                href="#contact"
+                href={resourceLinks.pamphlet}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-backgroundlight border border-primarymed/20 text-primarydark font-bold hover:bg-primarymed hover:text-white transition-smooth hover-trigger shadow-sm"
               >
-                Unduh Silabus <i className="fa-solid fa-download"></i>
+                Pamflet <i className="fa-solid fa-image"></i>
+              </a>
+              <a
+                href={resourceLinks.guidebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-primarydark text-white font-bold hover:bg-primarymed transition-smooth hover-trigger shadow-sm"
+              >
+                Guidance Book <i className="fa-solid fa-book-open"></i>
               </a>
             </div>
           </div>
@@ -51,7 +62,9 @@ export default function Categories() {
                   </div>
 
                   <a
-                    href="#contact"
+                    href={resourceLinks.guidebook}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-primarydark font-bold group-hover:text-primarymed transition-colors relative z-10"
                   >
                     Detail <i className="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>

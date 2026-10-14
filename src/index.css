@@ -59,6 +59,7 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    scroll-padding-top: 5rem; /* kompensasi navbar fixed (h-20) saat klik anchor */
   }
   
   body {
@@ -301,7 +302,16 @@
 @keyframes t-check-draw { to { stroke-dashoffset: 0; } }
 
 /* Reduced motion accessibility */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.35s ease-out both;
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .animate-fade-in { animation: none !important; }
   .t-shimmer::before { animation: none !important; }
   .t-badge, .t-badge-dot { animation: none !important; transition: none !important; }
   .t-tilt-card { transform: none !important; transition: none !important; }

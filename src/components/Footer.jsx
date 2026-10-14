@@ -1,4 +1,6 @@
 import React from 'react';
+import SocialLinks from './SocialLinks';
+import { images, asset } from '../data/siteData';
 
 export default function Footer() {
   return (
@@ -6,30 +8,16 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
           <div>
-            <h3 className="font-heading text-xl font-extrabold mb-3">ALIES 2027</h3>
+            <div className="flex items-center gap-3 mb-3">
+              {images.logo && (
+                <img src={asset(images.logo)} alt="Logo ALIES" className="h-10 w-auto object-contain" />
+              )}
+              <h3 className="font-heading text-xl font-extrabold">ALIES 2027</h3>
+            </div>
             <p className="text-sm text-softcream/80 leading-relaxed mb-4 max-w-sm">
               Al-Amin Intelligence of Elementary School. Ajang olimpiade pelajar tingkat SD/MI sederajat oleh OSIS MTs–MA Pesantren Al-Amin Mojokerto.
             </p>
-            <div className="flex space-x-3">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-accentgold hover:text-primarydark transition-smooth hover-trigger"
-              >
-                <i className="fa-brands fa-instagram text-sm"></i>
-              </a>
-              <a
-                href="https://wa.me/6281234567890"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-accentgold hover:text-primarydark transition-smooth hover-trigger"
-              >
-                <i className="fa-brands fa-whatsapp text-sm"></i>
-              </a>
-            </div>
+            <SocialLinks />
           </div>
 
           <div>
@@ -58,8 +46,18 @@ export default function Footer() {
                 </a>
               </li>
               <li>
+                <a href="#rekap-nilai" className="text-softcream/80 hover:text-white transition-colors hover-trigger">
+                  Rekap Nilai
+                </a>
+              </li>
+              <li>
                 <a href="#faq" className="text-softcream/80 hover:text-white transition-colors hover-trigger">
                   FAQ
+                </a>
+              </li>
+              <li>
+                <a href="#contact-person" className="text-softcream/80 hover:text-white transition-colors hover-trigger">
+                  Contact Person
                 </a>
               </li>
             </ul>

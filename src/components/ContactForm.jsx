@@ -18,7 +18,7 @@ export default function ContactForm() {
   const validate = (data) => {
     const errors = {};
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const waRegex = /^[0-9]{9,15}$/;
+    const waRegex = /^[0-9]{10,15}$/;
 
     if (!data.name.trim()) errors.name = 'Nama lengkap wajib diisi.';
     if (!emailRegex.test(data.email.trim())) errors.email = 'Masukkan alamat email yang valid.';
@@ -74,11 +74,28 @@ export default function ContactForm() {
     }
 
     setIsSuccess(true);
-    const text = `Halo Panitia ALIES 2027,%0A%0ASaya ingin mendaftar/bertanya mengenai ALIES 2027:%0A- Nama: ${encodeURIComponent(formData.name)}%0A- Asal Sekolah: ${encodeURIComponent(formData.school)}%0A- Cabang Lomba: ${encodeURIComponent(formData.category)}%0A- Email: ${encodeURIComponent(formData.email)}%0A- WhatsApp: ${encodeURIComponent(formData.whatsapp)}%0A- Pesan: ${encodeURIComponent(formData.message)}`;
-    
-    setTimeout(() => {
-      window.open(`https://wa.me/6281234567890?text=${text}`, '_blank');
-    }, 1200);
+
+    const lines = [
+      'Halo Panitia ALIES 2027,',
+      '',
+      'Saya ingin mendaftar/bertanya mengenai ALIES 2027:',
+      `- Nama: ${formData.name.trim()}`,
+      `- Asal Sekolah: ${formData.school.trim()}`,
+      `- Cabang Lomba: ${formData.category}`,
+      `- Email: ${formData.email.trim()}`,
+      `- WhatsApp: ${formData.whatsapp.trim()}`,
+      `- Pesan: ${formData.message.trim()}`,
+    ];
+    const waUrl = `https://wa.me/6281234567890?text=${encodeURIComponent(lines.join('\n'))}`;
+
+    // Dipanggil langsung di dalam event submit (bukan di setTimeout) agar tidak
+    // diblokir popup blocker. Jika tetap diblokir, arahkan di tab yang sama.
+    const waWindow = window.open(waUrl, '_blank');
+    if (waWindow) {
+      waWindow.opener = null;
+    } else {
+      window.location.assign(waUrl);
+    }
 
     setFormData({
       name: '',
@@ -127,9 +144,9 @@ export default function ContactForm() {
                   </svg>
                 </span>
                 <div>
-                  <h4 className="font-heading font-bold text-primarydark text-base">Pendaftaran Berhasil Dikirim!</h4>
+                  <h4 className="font-heading font-bold text-primarydark text-base">Formulir Berhasil Diproses!</h4>
                   <p className="text-xs sm:text-sm text-charcoalgrey/80 mt-0.5">
-                    Data Anda telah tercatat dan Anda akan dialihkan ke WhatsApp resmi panitia ALIES 2027.
+                    Pesan Anda sudah disiapkan dan dikirim melalui WhatsApp panitia ALIES 2027. Silakan tekan kirim di WhatsApp untuk menyelesaikan.
                   </p>
                 </div>
               </div>

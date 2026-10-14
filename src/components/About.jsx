@@ -1,5 +1,6 @@
 import React from 'react';
 import Reveal from './Reveal';
+import Parallax from './Parallax';
 
 export default function About() {
   return (

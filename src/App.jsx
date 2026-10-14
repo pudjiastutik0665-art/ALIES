@@ -8,8 +8,10 @@ import CTA from './components/CTA';
 import Benefits from './components/Benefits';
 import Gallery from './components/Gallery';
 import FAQ from './components/FAQ';
-import ContactForm from './components/ContactForm';
 import Article from './components/Article';
+import RekapNilai from './components/RekapNilai';
+import ContactPerson from './components/ContactPerson';
+import Sponsors from './components/Sponsors';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 
@@ -44,11 +46,17 @@ export default function App() {
         {/* Dokumentasi */}
         <Gallery />
 
+        {/* Rekap Nilai */}
+        <RekapNilai />
+
+        {/* Sponsor */}
+        <Sponsors />
+
         {/* FAQ Accordion */}
         <FAQ />
 
-        {/* Form Kontak & Pendaftaran */}
-        <ContactForm />
+        {/* Contact Person */}
+        <ContactPerson />
 
         {/* Artikel SEO */}
         <Article />

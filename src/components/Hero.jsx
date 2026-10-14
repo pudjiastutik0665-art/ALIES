@@ -1,5 +1,7 @@
 import React from 'react';
 import Reveal from './Reveal';
+import Parallax from './Parallax';
+import { resourceLinks, images, asset } from '../data/siteData';
 import TiltCard from './TiltCard';
 
 export default function Hero() {
@@ -57,7 +59,9 @@ export default function Hero() {
             <Reveal direction="up" delay={400}>
               <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
                 <a
-                  href="#contact"
+                  href={resourceLinks.registration}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="px-8 py-4 bg-primarydark text-white font-bold rounded-2xl shadow-xl hover:bg-primarymed transition-smooth text-center flex items-center justify-center gap-2 hover-trigger hover:shadow-2xl hover:-translate-y-0.5"
                 >
                   Daftar Sekarang <i className="fa-solid fa-arrow-right text-sm"></i>
@@ -90,7 +94,15 @@ export default function Hero() {
                       </div>
 
                       <div className="w-full h-56 rounded-2xl bg-gradient-to-br from-primarydark/5 to-softcream/40 flex flex-col items-center justify-center text-center p-6 relative mb-6 group hover-trigger">
-                        <i className="fa-solid fa-shield-halved text-6xl text-primarydark mb-4 transform group-hover:scale-110 transition-transform duration-500"></i>
+                        {images.mascot ? (
+                          <img
+                            src={asset(images.mascot)}
+                            alt="Musha the Knight, maskot ALIES"
+                            className="h-32 w-auto object-contain mb-3 transform group-hover:scale-110 transition-transform duration-500"
+                          />
+                        ) : (
+                          <i className="fa-solid fa-shield-halved text-6xl text-primarydark mb-4 transform group-hover:scale-110 transition-transform duration-500"></i>
+                        )}
                         <h3 className="font-heading font-bold text-primarydark text-lg">Musha the Knight</h3>
                         <p className="text-xs text-charcoalgrey/70 mt-1">Official Mascot of ALIES 2027</p>
                       </div>

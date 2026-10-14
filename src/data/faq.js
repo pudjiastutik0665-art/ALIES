@@ -9,7 +9,7 @@ export const faqData = [
   },
   {
     question: "Bagaimana cara mendaftar?",
-    answer: "Klik tombol “Daftar Sekarang” yang tersedia di website ini dan ikuti formulir pendaftaran serta petunjuk selanjutnya."
+    answer: "Klik tombol “Daftar Sekarang” yang tersedia di website ini, lalu ikuti petunjuk pada halaman pendaftaran resmi."
   },
   {
     question: "Bagaimana jika mengalami kendala?",

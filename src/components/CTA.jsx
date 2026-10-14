@@ -1,5 +1,7 @@
 import React from 'react';
 import Reveal from './Reveal';
+import Parallax from './Parallax';
+import { resourceLinks } from '../data/siteData';
 
 export default function CTA() {
   return (
@@ -23,7 +25,9 @@ export default function CTA() {
           </p>
           <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
             <a
-              href="#contact"
+              href={resourceLinks.registration}
+              target="_blank"
+              rel="noopener noreferrer"
               className="w-full sm:w-auto px-8 py-4 bg-accentgold text-primarydark font-bold rounded-2xl shadow-lg hover:bg-softcream transition-smooth hover-trigger hover:shadow-xl hover:-translate-y-0.5"
             >
               Daftar Sekarang
