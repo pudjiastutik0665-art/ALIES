@@ -319,3 +319,67 @@
   .t-success-check { animation: none !important; opacity: 1 !important; transform: none !important; }
   .t-success-check svg path { animation: none !important; stroke-dashoffset: 0 !important; }
 }
+
+
+/* ========================================================
+   ANIMASI PEMBUKA (Intro)
+   ======================================================== */
+html.intro-playing body {
+  overflow: hidden;
+}
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #fff3d6 0%, #fdfbf7 62%);
+  transition: transform 0.75s cubic-bezier(0.76, 0, 0.24, 1),
+    border-radius 0.75s cubic-bezier(0.76, 0, 0.24, 1);
+  will-change: transform;
+}
+.intro-overlay.is-exit {
+  transform: translateY(-101%);
+  border-bottom-left-radius: 50% 14%;
+  border-bottom-right-radius: 50% 14%;
+}
+
+.intro-icon {
+  animation: intro-pop 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes intro-pop {
+  from { opacity: 0; transform: scale(0.3) rotate(-14deg); }
+  to { opacity: 1; transform: scale(1) rotate(0); }
+}
+
+.intro-letter {
+  display: inline-block;
+  animation: intro-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes intro-rise {
+  from { opacity: 0; transform: translateY(105%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.intro-tagline {
+  animation: intro-fade 0.7s ease-out 1.15s both;
+}
+@keyframes intro-fade {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.intro-bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, #b6771d, #ff9d00);
+  transform-origin: left;
+  animation: intro-fill 2s ease-in-out 0.15s both;
+}
+@keyframes intro-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}

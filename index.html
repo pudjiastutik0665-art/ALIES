@@ -13,6 +13,22 @@
     
     <!-- FontAwesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script>
+      // Animasi pembuka: hanya sekali per kunjungan & dilewati jika "kurangi gerakan".
+      // Pengaman: apa pun yang terjadi, halaman dibuka paksa setelah 6 detik.
+      (function () {
+        try {
+          var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          if (!reduced && !sessionStorage.getItem('alies-intro-seen')) {
+            document.documentElement.classList.add('intro-playing');
+            setTimeout(function () {
+              document.documentElement.classList.remove('intro-playing');
+              window.dispatchEvent(new Event('alies:intro-done'));
+            }, 6000);
+          }
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="antialiased selection:bg-accentgold selection:text-white bg-backgroundlight text-charcoalgrey">
     <div id="root"></div>

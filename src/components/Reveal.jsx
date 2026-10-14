@@ -18,14 +18,33 @@ export default function Reveal({
   distance = 30,
 }) {
   const [isVisible, setIsVisible] = useState(false);
+  const [noMotion, setNoMotion] = useState(false);
   const ref = useRef(null);
 
   useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+
+    // Pengguna memilih "kurangi gerakan": tampilkan langsung tanpa animasi.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setIsVisible(true);
+      setNoMotion(true);
+      return;
+    }
+
+    let waiting = null;
+
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (!entry.isIntersecting) return;
+        observer.unobserve(entry.target);
+        // Jika animasi pembuka sedang tampil, tunggu sampai selesai
+        // supaya animasi muncul tidak terbuang di balik layar pembuka.
+        if (document.documentElement.classList.contains('intro-playing')) {
+          waiting = () => setIsVisible(true);
+          window.addEventListener('alies:intro-done', waiting, { once: true });
+        } else {
           setIsVisible(true);
-          observer.unobserve(entry.target);
         }
       },
       {
@@ -34,14 +53,11 @@ export default function Reveal({
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
-    }
+    observer.observe(node);
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
-      }
+      observer.disconnect();
+      if (waiting) window.removeEventListener('alies:intro-done', waiting);
     };
   }, []);
 
@@ -69,8 +85,8 @@ export default function Reveal({
       className={className}
       style={{
         opacity: isVisible ? 1 : 0,
-        transform: getTransform(),
-        transitionProperty: 'opacity, transform',
+        transform: noMotion ? 'none' : getTransform(),
+        transitionProperty: noMotion ? 'none' : 'opacity, transform',
         transitionDuration: `${duration}ms`,
         transitionTimingFunction: 'cubic-bezier(0.16, 1, 0.3, 1)',
         transitionDelay: `${delay}ms`,

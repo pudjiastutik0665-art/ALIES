@@ -12,12 +12,16 @@ import Article from './components/Article';
 import RekapNilai from './components/RekapNilai';
 import ContactPerson from './components/ContactPerson';
 import Sponsors from './components/Sponsors';
+import Intro from './components/Intro';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 
 export default function App() {
   return (
     <div className="min-h-screen bg-backgroundlight selection:bg-accentgold selection:text-white relative">
+      {/* Animasi pembuka (sekali per kunjungan) */}
+      <Intro />
+
       {/* Interactive Custom Cursor */}
       <CustomCursor />
 
