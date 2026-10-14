@@ -1,0 +1,311 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* transitions.dev shimmer-text variables */
+  --shimmer-dur: 2800ms;
+  --shimmer-base: #b6771d;
+  --shimmer-highlight: #ffcf71;
+  --shimmer-band: 350%;
+  --shimmer-ease: linear;
+
+  /* transitions.dev notification-badge variables */
+  --badge-slide-dur: 280ms;
+  --badge-pop-dur: 500ms;
+  --badge-pop-close-dur: 180ms;
+  --badge-fade-dur: 400ms;
+  --badge-blur: 2px;
+  --badge-offset-x: -8px;
+  --badge-offset-y: 10px;
+  --badge-slide-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --badge-pop-ease: cubic-bezier(0.34, 1.36, 0.64, 1);
+
+  /* transitions.dev card-tilt variables */
+  --tilt-perspective: 1000px;
+  --tilt-return: 800ms;
+  --tilt-return-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tilt-follow: 300ms;
+  --tilt-follow-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --tilt-glare-opacity: 0.28;
+  --tilt-glare-fade: 300ms;
+  --tilt-glare-ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* transitions.dev error-state-shake variables */
+  --shake-distance: 6px;
+  --shake-overshoot: 4px;
+  --shake-dur-a: 75ms;
+  --shake-dur-b: 55ms;
+  --shake-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --revert-dur: 280ms;
+
+  /* transitions.dev success-check variables */
+  --check-opacity-dur: 450ms;
+  --check-rotate-dur: 450ms;
+  --check-rotate-from: 60deg;
+  --check-bob-dur: 500ms;
+  --check-y-amount: 20px;
+  --check-blur-dur: 450ms;
+  --check-blur-from: 8px;
+  --check-path-dur: 450ms;
+  --check-path-delay: 60ms;
+  --check-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-opacity: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-rotate: cubic-bezier(0.22, 1, 0.36, 1);
+  --check-ease-bob: cubic-bezier(0.34, 1.35, 0.64, 1);
+  --check-ease-path: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #fdfbf7;
+    color: #2d2d2d;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-heading {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px 0 rgba(123, 84, 47, 0.05);
+}
+
+.hero-bg {
+  background: radial-gradient(circle at 85% 15%, rgba(255, 207, 113, 0.25) 0%, transparent 60%),
+              radial-gradient(circle at 10% 80%, rgba(123, 84, 47, 0.06) 0%, transparent 50%),
+              transparent;
+}
+
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(0.8deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-float {
+  animation: float 5.5s ease-in-out infinite;
+}
+
+/* Custom Cursor styling on desktop */
+@media (pointer: fine) {
+  .custom-cursor-enabled body, 
+  .custom-cursor-enabled a, 
+  .custom-cursor-enabled button, 
+  .custom-cursor-enabled input, 
+  .custom-cursor-enabled textarea {
+    cursor: none !important;
+  }
+}
+
+#custom-cursor {
+  position: fixed;
+  top: 0; 
+  left: 0;
+  width: 12px; 
+  height: 12px;
+  background-color: #ff9d00;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  transition: width 0.25s cubic-bezier(0.25, 1, 0.5, 1), 
+              height 0.25s cubic-bezier(0.25, 1, 0.5, 1),
+              background-color 0.25s ease;
+  mix-blend-mode: difference;
+}
+
+#custom-cursor.hovered {
+  width: 44px;
+  height: 44px;
+  background-color: #ffcf71;
+  mix-blend-mode: normal;
+  opacity: 0.75;
+}
+
+/* ========================================================
+   TRANSITIONS.DEV: 1. SHIMMER TEXT
+   ======================================================== */
+.t-shimmer {
+  position: relative;
+  display: inline-block;
+  color: var(--shimmer-base);
+}
+.t-shimmer::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(
+    90deg,
+    transparent          0%,
+    transparent         35%,
+    var(--shimmer-highlight) 50%,
+    transparent         65%,
+    transparent        100%
+  );
+  background-size: var(--shimmer-band) 100%;
+  background-repeat: no-repeat;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: t-shimmer var(--shimmer-dur) var(--shimmer-ease) infinite;
+}
+@keyframes t-shimmer {
+  0%   { background-position: 100% 0; }
+  100% { background-position: 0% 0; }
+}
+
+/* ========================================================
+   TRANSITIONS.DEV: 2. NOTIFICATION BADGE POP
+   ======================================================== */
+@keyframes t-badge-slide-in {
+  from { transform: translate(var(--badge-offset-x), var(--badge-offset-y)); }
+  to   { transform: translate(0, 0); }
+}
+.t-badge {
+  display: inline-flex;
+  align-items: center;
+  pointer-events: none;
+  will-change: transform;
+}
+.t-badge[data-open="true"] {
+  animation: t-badge-slide-in var(--badge-slide-dur) var(--badge-slide-ease);
+}
+.t-badge-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transform-origin: center;
+  transform: scale(1);
+  opacity: 1;
+  filter: blur(0);
+  transition:
+    transform var(--badge-pop-dur)  var(--badge-pop-ease),
+    opacity   var(--badge-fade-dur) var(--badge-pop-ease),
+    filter    var(--badge-pop-dur)  var(--badge-pop-ease);
+  will-change: transform, opacity, filter;
+}
+
+/* ========================================================
+   TRANSITIONS.DEV: 3. CARD HOVER TILT & GLARE
+   ======================================================== */
+.t-tilt {
+  touch-action: none;
+  perspective: var(--tilt-perspective);
+}
+.t-tilt-card {
+  position: relative;
+  border-radius: inherit;
+  transform:
+    rotateX(var(--tilt-rx, 0deg))
+    rotateY(var(--tilt-ry, 0deg));
+  transform-style: preserve-3d;
+  transition: transform var(--tilt-return) var(--tilt-return-ease);
+  will-change: transform;
+}
+.t-tilt-card.is-tilting {
+  transition: transform var(--tilt-follow) var(--tilt-follow-ease);
+}
+.t-tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(circle 95px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255,255,255,0.48), rgba(255,255,255,0.06) 52%, rgba(255,255,255,0) 84%),
+    radial-gradient(circle 200px at var(--tilt-gx, 50%) var(--tilt-gy, 50%),
+      rgba(255,255,255,0.22), rgba(255,255,255,0.04) 58%, rgba(255,255,255,0) 78%);
+  transition: opacity var(--tilt-glare-fade) var(--tilt-glare-ease);
+}
+.t-tilt.is-hover .t-tilt-glare {
+  opacity: var(--tilt-glare-opacity);
+}
+
+/* ========================================================
+   TRANSITIONS.DEV: 4. ERROR STATE SHAKE
+   ======================================================== */
+.t-input {
+  transition: border-color var(--revert-dur) ease-out;
+  will-change: transform;
+}
+.t-input.is-shaking {
+  animation: t-input-shake calc(var(--shake-dur-a) * 2 + var(--shake-dur-b) * 2) linear;
+}
+@keyframes t-input-shake {
+  0%      { transform: translateX(0); animation-timing-function: var(--shake-ease); }
+  28.57%  { transform: translateX(var(--shake-distance)); animation-timing-function: var(--shake-ease); }
+  57.14%  { transform: translateX(calc(var(--shake-distance) * -1)); animation-timing-function: var(--shake-ease); }
+  78.57%  { transform: translateX(var(--shake-overshoot)); animation-timing-function: var(--shake-ease); }
+  100%    { transform: translateX(0); }
+}
+
+/* ========================================================
+   TRANSITIONS.DEV: 5. SUCCESS CHECK ANIMATION
+   ======================================================== */
+.t-success-check {
+  display: inline-block;
+  transform-origin: center;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+.t-success-check svg {
+  display: block;
+  overflow: visible;
+}
+.t-success-check svg path {
+  stroke-dasharray: 28;
+  stroke-dashoffset: 28;
+}
+.t-success-check[data-state="in"] {
+  animation:
+    t-check-fade   var(--check-opacity-dur) var(--check-ease-opacity) forwards,
+    t-check-rotate var(--check-rotate-dur)  var(--check-ease-rotate)  forwards,
+    t-check-blur   var(--check-blur-dur)    var(--check-ease-out)     forwards,
+    t-check-bob    var(--check-bob-dur)     var(--check-ease-bob)     forwards;
+}
+.t-success-check[data-state="in"] svg path {
+  animation: t-check-draw var(--check-path-dur) var(--check-ease-path) var(--check-path-delay, 60ms) forwards;
+}
+@keyframes t-check-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes t-check-rotate {
+  from { transform: rotate(var(--check-rotate-from)); }
+  to   { transform: rotate(0deg); }
+}
+@keyframes t-check-blur {
+  from { filter: blur(var(--check-blur-from)); }
+  to   { filter: blur(0); }
+}
+@keyframes t-check-bob {
+  from { transform: translateY(var(--check-y-amount)); }
+  to   { transform: translateY(0); }
+}
+@keyframes t-check-draw { to { stroke-dashoffset: 0; } }
+
+/* Reduced motion accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .t-shimmer::before { animation: none !important; }
+  .t-badge, .t-badge-dot { animation: none !important; transition: none !important; }
+  .t-tilt-card { transform: none !important; transition: none !important; }
+  .t-input { animation: none !important; transform: none !important; }
+  .t-success-check { animation: none !important; opacity: 1 !important; transform: none !important; }
+  .t-success-check svg path { animation: none !important; stroke-dashoffset: 0 !important; }
+}

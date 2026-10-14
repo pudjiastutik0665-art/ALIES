@@ -1,0 +1,946 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALIES Al-Amin 2027: Olimpiade SD/MI Tingkat Nasional</title>
+    <meta name="description" content="Ikuti ALIES Al-Amin 2027! Ajang olimpiade pelajar SD/MI bergengsi dari Al Amin Mojokerto. Asah potensi akademis dan raih prestasimu. Daftar sekarang!">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tailwind Configuration -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primarydark: '#7b542f',
+                        primarymed: '#b6771d',
+                        accentgold: '#ff9d00',
+                        softcream: '#ffcf71',
+                        backgroundlight: '#fdfbf7',
+                        charcoalgrey: '#2d2d2d'
+                    },
+                    fontFamily: {
+                        heading: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        body: ['Inter', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Libraries CDN (React, ReactDOM, Babel, Lenis) -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.39/dist/lenis.min.js"></script>
+
+    <!-- Custom CSS (Designer Enhancements) -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fdfbf7;
+            color: #2d2d2d;
+            overflow-x: hidden;
+            overscroll-behavior: none; 
+        }
+
+        /* Hide default cursor on desktop */
+        @media (pointer: fine) {
+            body, a, button, input, textarea {
+                cursor: none !important;
+            }
+        }
+
+        /* Custom Cursor styling */
+        #custom-cursor {
+            position: fixed;
+            top: 0; left: 0;
+            width: 12px; height: 12px;
+            background-color: #ff9d00;
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(-50%, -50%);
+            transition: width 0.3s cubic-bezier(0.25, 1, 0.5, 1), 
+                        height 0.3s cubic-bezier(0.25, 1, 0.5, 1),
+                        background-color 0.3s ease;
+            mix-blend-mode: difference;
+        }
+
+        #custom-cursor.hovered {
+            width: 50px;
+            height: 50px;
+            background-color: #ffcf71;
+            mix-blend-mode: normal;
+            opacity: 0.8;
+        }
+
+        /* Preloader */
+        #preloader {
+            position: fixed;
+            inset: 0;
+            background-color: #fdfbf7;
+            z-index: 100000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .loader-text {
+            clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        h1, h2, h3, h4, h5, h6, .font-heading {
+            font-family: '"Plus Jakarta Sans"', sans-serif;
+        }
+
+        .navbar-transparent {
+            background: transparent;
+            border-bottom: 1px solid rgba(123, 84, 47, 0.05);
+        }
+
+        .navbar-scrolled {
+            background: rgba(253, 251, 247, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(123, 84, 47, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px 0 rgba(123, 84, 47, 0.05);
+        }
+
+        .hero-bg {
+            background: radial-gradient(circle at 85% 15%, rgba(255, 207, 113, 0.3) 0%, transparent 60%),
+                        radial-gradient(circle at 10% 80%, rgba(123, 84, 47, 0.08) 0%, transparent 50%),
+                        #fdfbf7;
+        }
+
+        .transition-smooth {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(1deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+        .animate-float {
+            animation: float 5s ease-in-out infinite;
+        }
+
+        .gsap-init {
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accentgold selection:text-white">
+
+    <!-- PRELOADER -->
+    <div id="preloader">
+        <div class="loader-text overflow-hidden">
+            <h1 id="loader-heading" class="font-heading text-4xl sm:text-6xl font-extrabold text-primarydark tracking-tighter">ALIES 2027</h1>
+        </div>
+        <div class="w-48 h-1 bg-primarymed/20 mt-6 rounded-full overflow-hidden">
+            <div id="loader-bar" class="h-full bg-accentgold w-0 rounded-full"></div>
+        </div>
+    </div>
+
+    <!-- CUSTOM CURSOR -->
+    <div id="custom-cursor" class="hidden lg:block"></div>
+
+    <!-- 1. NAVBAR -->
+    <header id="navbar" class="fixed top-0 left-0 w-full z-50 navbar-transparent transition-smooth">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="#home" class="flex items-center gap-2 magnetic-element" data-magnetic-strength="20">
+                    <span class="font-heading text-2xl font-extrabold text-primarydark tracking-tight">ALIES 2027</span>
+                </a>
+
+                <nav class="hidden lg:flex items-center space-x-8">
+                    <a href="#home" class="text-sm font-medium text-charcoalgrey hover:text-accentgold transition-colors hover-trigger">Home</a>
+                    <a href="#about" class="text-sm font-medium text-charcoalgrey hover:text-accentgold transition-colors hover-trigger">About</a>
+                    <a href="#categories" class="text-sm font-medium text-charcoalgrey hover:text-accentgold transition-colors hover-trigger">Cabang Lomba</a>
+                    <a href="#benefits" class="text-sm font-medium text-charcoalgrey hover:text-accentgold transition-colors hover-trigger">Hadiah</a>
+                    <a href="#gallery" class="text-sm font-medium text-charcoalgrey hover:text-accentgold transition-colors hover-trigger">Dokumentasi</a>
+                    <a href="#faq" class="text-sm font-medium text-charcoalgrey hover:text-accentgold transition-colors hover-trigger">FAQ</a>
+                </nav>
+
+                <div class="hidden lg:flex items-center magnetic-element" data-magnetic-strength="40">
+                    <a href="#contact" class="px-6 py-3 bg-primarydark text-white text-sm font-bold rounded-full shadow-lg hover:bg-primarymed transition-smooth hover-trigger">
+                        Daftar Sekarang
+                    </a>
+                </div>
+
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" aria-label="Toggle Menu" class="text-primarydark p-2 hover-trigger">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="lg:hidden hidden bg-white/95 backdrop-blur-xl border-b border-gray-100 shadow-2xl absolute w-full transition-smooth">
+            <div class="px-6 py-5 space-y-3">
+                <a href="#home" class="mobile-link block text-base font-medium text-charcoalgrey">Home</a>
+                <a href="#about" class="mobile-link block text-base font-medium text-charcoalgrey">About</a>
+                <a href="#categories" class="mobile-link block text-base font-medium text-charcoalgrey">Cabang Lomba</a>
+                <a href="#benefits" class="mobile-link block text-base font-medium text-charcoalgrey">Hadiah</a>
+                <a href="#faq" class="mobile-link block text-base font-medium text-charcoalgrey">FAQ</a>
+                <a href="#contact" class="mobile-link block text-center w-full py-3 mt-4 bg-primarydark text-white font-bold rounded-xl shadow-md">
+                    Daftar Sekarang
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 3. HERO SECTION -->
+        <section id="home" class="hero-bg pt-32 pb-20 lg:pt-40 lg:pb-32 relative overflow-hidden flex items-center min-h-screen">
+            <div class="absolute inset-0 opacity-20 pointer-events-none bg-[radial-gradient(#b6771d_1px,transparent_1px)] [background-size:24px_24px] hero-parallax" data-speed="0.2"></div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    
+                    <div class="lg:col-span-7 text-left hero-parallax" data-speed="0.1">
+                        <div class="hero-elem gsap-init inline-flex items-center gap-2 py-1 px-3.5 rounded-full bg-softcream/40 text-primarydark text-xs font-bold tracking-wide uppercase mb-6 border border-primarymed/20">
+                            <span class="w-2 h-2 rounded-full bg-accentgold animate-pulse"></span>
+                            ALIES 2027 • NATIONAL STUDENT OLYMPIAD
+                        </div>
+                        
+                        <h1 class="hero-elem gsap-init font-heading text-4xl sm:text-5xl lg:text-7xl font-extrabold text-primarydark leading-tight tracking-tighter mb-6 relative">
+                            CROWN YOUR MIND, <br>
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primarymed to-accentgold relative inline-block">
+                                RISE AS A CHAMPION
+                                <svg class="absolute w-full h-3 -bottom-1 left-0 text-softcream/60 -z-10" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0 5 Q 50 10 100 5" stroke="currentColor" stroke-width="4" fill="transparent"/></svg>
+                            </span>
+                        </h1>
+                        
+                        <p class="hero-elem gsap-init text-lg sm:text-xl font-medium text-primarymed mb-4">
+                            "Merdeka Berprestasi, Berkarya Menginspirasi"
+                        </p>
+                        <p class="hero-elem gsap-init text-base text-charcoalgrey/80 max-w-xl mb-10 leading-relaxed">
+                            ALIES (Al-Amin Intelligence of Elementary School) merupakan ajang olimpiade pelajar tingkat SD/MI sederajat yang diselenggarakan oleh OSIS MTs–MA Pesantren Al-Amin Mojokerto.
+                        </p>
+                        
+                        <div class="hero-elem gsap-init flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                            <div class="magnetic-element" data-magnetic-strength="30">
+                                <a href="#contact" class="px-8 py-4 bg-primarydark text-white font-bold rounded-2xl shadow-xl hover:bg-primarymed transition-smooth text-center flex items-center justify-center gap-2 hover-trigger">
+                                    Daftar Sekarang <i class="fa-solid fa-arrow-right text-sm"></i>
+                                </a>
+                            </div>
+                            <div class="magnetic-element" data-magnetic-strength="20">
+                                <a href="#categories" class="px-8 py-4 bg-white/50 backdrop-blur-sm text-primarydark border border-primarymed/30 font-bold rounded-2xl shadow-sm hover:bg-softcream/30 transition-smooth text-center hover-trigger">
+                                    Lihat Cabang Lomba
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 relative hero-visual gsap-init hero-parallax" data-speed="-0.1">
+                        <div class="relative mx-auto max-w-md lg:max-w-none">
+                            <div class="glass-card rounded-3xl p-8 relative overflow-hidden animate-float">
+                                <div class="flex justify-between items-center mb-6">
+                                    <span class="px-3 py-1 bg-accentgold/20 text-primarydark text-xs font-bold rounded-full">Open Registration</span>
+                                    <i class="fa-solid fa-award text-2xl text-primarymed"></i>
+                                </div>
+
+                                <div class="w-full h-56 rounded-2xl bg-gradient-to-br from-primarydark/5 to-softcream/40 flex flex-col items-center justify-center text-center p-6 relative mb-6 group cursor-none hover-trigger">
+                                    <i class="fa-solid fa-shield-halved text-6xl text-primarydark mb-4 transform group-hover:scale-110 transition-transform duration-500"></i>
+                                    <h3 class="font-heading font-bold text-primarydark text-lg">Musha the Knight</h3>
+                                    <p class="text-xs text-charcoalgrey/70 mt-1">Official Mascot of ALIES 2027</p>
+                                </div>
+
+                                <div class="grid grid-cols-3 gap-4 pt-4 border-t border-primarymed/10 text-center">
+                                    <div>
+                                        <div class="font-heading font-extrabold text-primarydark text-2xl">4+</div>
+                                        <div class="text-xs text-charcoalgrey/60 mt-1">Cabang Lomba</div>
+                                    </div>
+                                    <div class="border-x border-primarymed/10">
+                                        <div class="font-heading font-extrabold text-primarydark text-2xl">2027</div>
+                                        <div class="text-xs text-charcoalgrey/60 mt-1">Tahun Event</div>
+                                    </div>
+                                    <div>
+                                        <div class="font-heading font-extrabold text-primarydark text-2xl">SD/MI</div>
+                                        <div class="text-xs text-charcoalgrey/60 mt-1">Peserta</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="absolute -bottom-10 -left-10 w-48 h-48 bg-softcream/40 rounded-full blur-3xl pointer-events-none -z-10"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. ABOUT ALIES -->
+        <section id="about" class="py-24 lg:py-32 bg-white relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+                    
+                    <div class="lg:col-span-7 about-content gsap-init">
+                        <span class="text-xs font-bold text-primarydark uppercase tracking-widest bg-softcream/50 px-4 py-1.5 rounded-full">Tentang ALIES</span>
+                        <h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-primarydark mt-6 mb-8 tracking-tight">
+                            Membangun Generasi Cerdas & Berkarakter
+                        </h2>
+                        <p class="text-lg text-charcoalgrey/80 leading-relaxed mb-6 font-light">
+                            <strong>ALIES (Al-Amin Intelligence of Elementary School)</strong> adalah kompetisi akademik bergengsi yang dirancang khusus untuk menguji kemampuan dan potensi terbaik pelajar tingkat sekolah dasar sederajat. 
+                        </p>
+                        <p class="text-base text-charcoalgrey/70 leading-relaxed mb-10">
+                            Diselenggarakan secara konsisten oleh OSIS MTs–MA Pesantren Al-Amin Mojokerto, acara ini tidak hanya sekadar ajang perlombaan akademik, tetapi juga sarana pembentukan karakter luhur, sportivitas, dan daya saing global.
+                        </p>
+
+                        <div class="flex items-center gap-6 text-sm font-semibold text-primarydark">
+                            <div class="flex flex-col items-center gap-2 hover-trigger magnetic-element" data-magnetic-strength="10">
+                                <span class="w-4 h-4 rounded-full bg-primarydark ring-4 ring-primarydark/20"></span>
+                                <span class="text-xs text-charcoalgrey/60">2007/2008</span>
+                            </div>
+                            <div class="flex-1 h-[2px] bg-gradient-to-r from-primarydark/20 to-primarymed/20"></div>
+                            <div class="flex flex-col items-center gap-2 hover-trigger magnetic-element" data-magnetic-strength="10">
+                                <span class="w-4 h-4 rounded-full bg-primarymed ring-4 ring-primarymed/20"></span>
+                                <span class="text-xs text-charcoalgrey/60">Agenda Tahunan</span>
+                            </div>
+                            <div class="flex-1 h-[2px] bg-gradient-to-r from-primarymed/20 to-accentgold/20"></div>
+                            <div class="flex flex-col items-center gap-2 hover-trigger magnetic-element" data-magnetic-strength="10">
+                                <span class="w-4 h-4 rounded-full bg-accentgold ring-4 ring-accentgold/20 animate-pulse"></span>
+                                <span class="text-xs text-charcoalgrey/60">ALIES 2027</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lg:col-span-5 about-card gsap-init relative">
+                        <div class="absolute inset-0 bg-primarymed/10 transform rotate-3 rounded-[32px] scale-105 -z-10 transition-transform duration-500"></div>
+                        <div class="rounded-[32px] border border-white/60 bg-white/80 backdrop-blur-xl p-10 shadow-2xl relative overflow-hidden group hover-trigger">
+                            <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-primarydark to-primarymed text-white flex items-center justify-center mb-8 shadow-lg transform group-hover:rotate-12 transition-transform duration-500">
+                                <i class="fa-solid fa-graduation-cap text-2xl"></i>
+                            </div>
+                            <h3 class="font-heading text-2xl font-bold text-primarydark mb-2">Filosofi Kami</h3>
+                            <p class="text-sm font-medium text-charcoalgrey/60 mb-6">Al-Amin Intelligence of Elementary School</p>
+                            <p class="text-base text-charcoalgrey/80 leading-relaxed border-t border-gray-100 pt-6 italic">
+                                "Mencetak generasi yang cerdas secara intelektual, tangguh secara mental, serta memiliki semangat kebangsaan yang tinggi dalam balutan nilai Islami."
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. NILAI DAN TUJUAN -->
+        <section class="py-24 bg-backgroundlight border-y border-primarymed/5 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-softcream/20 to-transparent pointer-events-none"></div>
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-2xl mx-auto mb-20 values-header gsap-init">
+                    <h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-primarydark mb-4">
+                        Why Join ALIES?
+                    </h2>
+                    <p class="text-lg text-charcoalgrey/60">Empat pilar utama yang mendasari setiap pelaksanaan kompetisi.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="value-card gsap-init group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primarymed/20 hover-trigger cursor-none">
+                        <div class="text-4xl font-extrabold text-transparent text-stroke mb-6" style="-webkit-text-stroke: 1px #b6771d; opacity: 0.3;">01</div>
+                        <h3 class="font-heading text-xl font-bold text-primarydark mb-3">Kompetitif</h3>
+                        <p class="text-sm text-charcoalgrey/70 leading-relaxed">Mengasah kemampuan akademik dan daya saing peserta secara optimal.</p>
+                    </div>
+
+                    <div class="value-card gsap-init group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primarymed/20 hover-trigger cursor-none">
+                        <div class="text-4xl font-extrabold text-transparent text-stroke mb-6" style="-webkit-text-stroke: 1px #b6771d; opacity: 0.3;">02</div>
+                        <h3 class="font-heading text-xl font-bold text-primarydark mb-3">Sportif</h3>
+                        <p class="text-sm text-charcoalgrey/70 leading-relaxed">Membangun karakter kompetitif yang sehat, jujur, dan menjunjung sportivitas.</p>
+                    </div>
+
+                    <div class="value-card gsap-init group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primarymed/20 hover-trigger cursor-none">
+                        <div class="text-4xl font-extrabold text-transparent text-stroke mb-6" style="-webkit-text-stroke: 1px #b6771d; opacity: 0.3;">03</div>
+                        <h3 class="font-heading text-xl font-bold text-primarydark mb-3">Inspiratif</h3>
+                        <p class="text-sm text-charcoalgrey/70 leading-relaxed">Mendorong generasi muda untuk berkarya dan menginspirasi lingkungan sekitar.</p>
+                    </div>
+
+                    <div class="value-card gsap-init group bg-white rounded-3xl p-8 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-500 border border-transparent hover:border-primarymed/20 hover-trigger cursor-none">
+                        <div class="text-4xl font-extrabold text-transparent text-stroke mb-6" style="-webkit-text-stroke: 1px #b6771d; opacity: 0.3;">04</div>
+                        <h3 class="font-heading text-xl font-bold text-primarydark mb-3">Berprestasi</h3>
+                        <p class="text-sm text-charcoalgrey/70 leading-relaxed">Memberikan ruang bagi siswa untuk menunjukkan potensi terbaiknya secara nasional.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CABANG LOMBA -->
+        <section id="categories" class="py-32 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-end mb-16 cat-header gsap-init gap-6">
+                    <div class="max-w-2xl">
+                        <h2 class="font-heading text-4xl sm:text-5xl font-extrabold text-primarydark mb-4">
+                            Cabang Lomba
+                        </h2>
+                        <p class="text-lg text-charcoalgrey/60">Pilih bidang keahlian dan daftarkan dirimu segera.</p>
+                    </div>
+                    <div class="magnetic-element" data-magnetic-strength="20">
+                        <a href="#contact" class="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-backgroundlight border border-primarymed/20 text-primarydark font-bold hover:bg-primarymed hover:text-white transition-smooth hover-trigger">
+                            Unduh Silabus <i class="fa-solid fa-download"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="cat-card gsap-init bg-backgroundlight rounded-[32px] p-8 border border-primarymed/10 hover:border-primarymed/30 transition-smooth group cursor-none hover-trigger relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-primarymed/5 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primarydark group-hover:bg-primarydark group-hover:text-white transition-smooth mb-8 relative z-10">
+                            <i class="fa-solid fa-flask text-xl"></i>
+                        </div>
+                        <span class="text-xs font-bold text-primarymed uppercase tracking-widest block mb-2">IPA</span>
+                        <h3 class="font-heading text-2xl font-bold text-primarydark mb-4">Science</h3>
+                        <p class="text-sm text-charcoalgrey/60 mb-8">Uji pemahaman dan analisis fenomena sains alam dengan kritis.</p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-primarydark font-bold group-hover:text-primarymed transition-colors relative z-10">
+                            Detail <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <div class="cat-card gsap-init bg-backgroundlight rounded-[32px] p-8 border border-primarymed/10 hover:border-primarymed/30 transition-smooth group cursor-none hover-trigger relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-accentgold/5 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primarydark group-hover:bg-primarydark group-hover:text-white transition-smooth mb-8 relative z-10">
+                            <i class="fa-solid fa-calculator text-xl"></i>
+                        </div>
+                        <span class="text-xs font-bold text-primarymed uppercase tracking-widest block mb-2">Matematika</span>
+                        <h3 class="font-heading text-2xl font-bold text-primarydark mb-4">Math</h3>
+                        <p class="text-sm text-charcoalgrey/60 mb-8">Selesaikan persoalan logika, numerik, dan aritmatika dengan cepat.</p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-primarydark font-bold group-hover:text-primarymed transition-colors relative z-10">
+                            Detail <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <div class="cat-card gsap-init bg-backgroundlight rounded-[32px] p-8 border border-primarymed/10 hover:border-primarymed/30 transition-smooth group cursor-none hover-trigger relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-primarymed/5 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primarydark group-hover:bg-primarydark group-hover:text-white transition-smooth mb-8 relative z-10">
+                            <i class="fa-solid fa-language text-xl"></i>
+                        </div>
+                        <span class="text-xs font-bold text-primarymed uppercase tracking-widest block mb-2">Inggris</span>
+                        <h3 class="font-heading text-2xl font-bold text-primarydark mb-4">English</h3>
+                        <p class="text-sm text-charcoalgrey/60 mb-8">Tunjukkan kemampuan grammar, vocabulary, & reading comprehension.</p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-primarydark font-bold group-hover:text-primarymed transition-colors relative z-10">
+                            Detail <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+
+                    <div class="cat-card gsap-init bg-backgroundlight rounded-[32px] p-8 border border-primarymed/10 hover:border-primarymed/30 transition-smooth group cursor-none hover-trigger relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-32 h-32 bg-accentgold/5 rounded-bl-full transform translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform duration-700"></div>
+                        <div class="w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center text-primarydark group-hover:bg-primarydark group-hover:text-white transition-smooth mb-8 relative z-10">
+                            <i class="fa-solid fa-book-quran text-xl"></i>
+                        </div>
+                        <span class="text-xs font-bold text-primarymed uppercase tracking-widest block mb-2">Arab</span>
+                        <h3 class="font-heading text-2xl font-bold text-primarydark mb-4">Arabic</h3>
+                        <p class="text-sm text-charcoalgrey/60 mb-8">Kompetisi penguasaan mufradat, qawaid, dan pemahaman teks.</p>
+                        <a href="#contact" class="inline-flex items-center gap-2 text-primarydark font-bold group-hover:text-primarymed transition-colors relative z-10">
+                            Detail <i class="fa-solid fa-arrow-right transform group-hover:translate-x-1 transition-transform"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 7. CTA SECTION -->
+        <section class="py-24 bg-primarydark text-white relative overflow-hidden">
+            <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#ffcf71_1px,transparent_1px)] [background-size:20px_20px]"></div>
+            <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h2 class="font-heading text-4xl sm:text-5xl font-extrabold mb-6">Siap Menjadi Juara?</h2>
+                <p class="text-lg text-softcream max-w-2xl mx-auto mb-10 font-light">
+                    Tunjukkan kemampuanmu, raih prestasimu, dan jadilah bagian dari ALIES 2027.
+                </p>
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-accentgold text-primarydark font-bold rounded-2xl shadow-lg hover:bg-softcream transition-smooth hover-trigger">
+                        Daftar Sekarang
+                    </a>
+                    <a href="#contact" class="w-full sm:w-auto px-8 py-4 bg-transparent border-2 border-softcream/40 text-white font-bold rounded-2xl hover:bg-white/10 transition-smooth hover-trigger">
+                        Hubungi Customer Service
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 8. HADIAH / BENEFIT -->
+        <section id="benefits" class="py-24 bg-backgroundlight">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16 benefit-header gsap-init">
+                    <span class="text-xs font-bold text-primarydark uppercase tracking-widest bg-softcream/50 px-3 py-1 rounded-full">Keuntungan</span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-primarydark mt-4">Apa yang Kamu Dapatkan?</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="benefit-card gsap-init bg-white rounded-2xl p-8 border border-primarymed/15 shadow-sm hover-trigger cursor-none hover:shadow-lg transition-smooth">
+                        <div class="w-12 h-12 rounded-xl bg-softcream/50 text-primarydark flex items-center justify-center mb-5 font-bold"><i class="fa-solid fa-certificate text-xl"></i></div>
+                        <h3 class="font-heading text-lg font-bold text-primarydark mb-2">Sertifikat</h3>
+                        <p class="text-sm text-charcoalgrey/70">Sertifikat resmi keikutsertaan tingkat nasional untuk melengkapi portofolio akademikmu.</p>
+                    </div>
+
+                    <div class="benefit-card gsap-init bg-white rounded-2xl p-8 border border-primarymed/15 shadow-sm hover-trigger cursor-none hover:shadow-lg transition-smooth">
+                        <div class="w-12 h-12 rounded-xl bg-softcream/50 text-primarydark flex items-center justify-center mb-5 font-bold"><i class="fa-solid fa-chess-board text-xl"></i></div>
+                        <h3 class="font-heading text-lg font-bold text-primarydark mb-2">Pengalaman Kompetisi</h3>
+                        <p class="text-sm text-charcoalgrey/70">Menguji mental tanding serta mengukur sejauh mana penguasaan materi pelajaran.</p>
+                    </div>
+
+                    <div class="benefit-card gsap-init bg-white rounded-2xl p-8 border border-primarymed/15 shadow-sm hover-trigger cursor-none hover:shadow-lg transition-smooth">
+                        <div class="w-12 h-12 rounded-xl bg-softcream/50 text-primarydark flex items-center justify-center mb-5 font-bold"><i class="fa-solid fa-award text-xl"></i></div>
+                        <h3 class="font-heading text-lg font-bold text-primarydark mb-2">Kesempatan Berprestasi</h3>
+                        <p class="text-sm text-charcoalgrey/70">Peluang besar untuk meraih podium juara dan mengharumkan nama sekolah asal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 9. DOKUMENTASI -->
+        <section id="gallery" class="py-24 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16 gallery-header gsap-init">
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-primarydark mt-4">Dokumentasi ALIES</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="gallery-item gsap-init group relative rounded-2xl overflow-hidden shadow-sm aspect-[4/3] bg-gray-100 hover-trigger cursor-none">
+                        <div class="w-full h-full bg-gradient-to-tr from-primarydark/40 to-primarymed/40 flex items-center justify-center">
+                            <i class="fa-solid fa-image text-4xl text-white/80 group-hover:scale-125 transition-transform duration-500"></i>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-primarydark/90 via-transparent opacity-0 group-hover:opacity-100 transition-smooth flex items-end p-6">
+                            <p class="text-white text-sm font-semibold">Suasana Pengerjaan Ujian</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item gsap-init group relative rounded-2xl overflow-hidden shadow-sm aspect-[4/3] bg-gray-100 hover-trigger cursor-none">
+                        <div class="w-full h-full bg-gradient-to-tr from-primarymed/40 to-accentgold/40 flex items-center justify-center">
+                            <i class="fa-solid fa-image text-4xl text-white/80 group-hover:scale-125 transition-transform duration-500"></i>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-primarydark/90 via-transparent opacity-0 group-hover:opacity-100 transition-smooth flex items-end p-6">
+                            <p class="text-white text-sm font-semibold">Penyerahan Trofi Juara Umum</p>
+                        </div>
+                    </div>
+
+                    <div class="gallery-item gsap-init group relative rounded-2xl overflow-hidden shadow-sm aspect-[4/3] bg-gray-100 hover-trigger cursor-none">
+                        <div class="w-full h-full bg-gradient-to-tr from-accentgold/40 to-primarydark/40 flex items-center justify-center">
+                            <i class="fa-solid fa-image text-4xl text-white/80 group-hover:scale-125 transition-transform duration-500"></i>
+                        </div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-primarydark/90 via-transparent opacity-0 group-hover:opacity-100 transition-smooth flex items-end p-6">
+                            <p class="text-white text-sm font-semibold">Antusiasme Peserta Cilik</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 10. FAQ (React Root) -->
+        <section id="faq" class="py-24 bg-backgroundlight border-t border-primarymed/10">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto mb-16 faq-header gsap-init">
+                    <span class="text-xs font-bold text-primarydark uppercase tracking-widest bg-softcream/50 px-3 py-1 rounded-full">Bantuan</span>
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-primarydark mt-4">Frequently Asked Questions</h2>
+                </div>
+                <div id="faq-react-root" class="faq-list gsap-init"></div>
+            </div>
+        </section>
+
+        <!-- 11. FORM KONTAK (React Root) -->
+        <section id="contact" class="py-24 bg-white border-t border-primarymed/10">
+            <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-xl mx-auto mb-12">
+                    <h2 class="font-heading text-3xl sm:text-4xl font-extrabold text-primarydark mt-4">Kirim Pesan</h2>
+                    <p class="text-sm text-charcoalgrey/70 mt-2">Isi form di bawah ini untuk pertanyaan atau pendaftaran awal.</p>
+                </div>
+                <div id="contact-react-root"></div>
+            </div>
+        </section>
+
+        <!-- 12. ARTIKEL SEO -->
+        <article id="article" class="py-20 bg-backgroundlight border-t border-primarymed/10">
+            <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-charcoalgrey/90 leading-relaxed">
+                <header class="mb-10 text-center">
+                    <span class="text-xs font-bold text-primarydark uppercase tracking-widest bg-softcream/50 px-3 py-1 rounded-full">Informasi Resmi</span>
+                    <h1 class="font-heading text-3xl sm:text-4xl font-extrabold text-primarydark mt-4 hover-trigger cursor-none">
+                        ALIES Al-Amin 2027: Ajang Olimpiade Pelajar SD/MI Berprestasi
+                    </h1>
+                </header>
+
+                <p class="text-base sm:text-lg mb-8 leading-relaxed">
+                    <strong>ALIES Al-Amin</strong> (Al-Amin Intelligence of Elementary School) kembali hadir sebagai ajang olimpiade pelajar tingkat SD/MI sederajat bergengsi. Diselenggarakan secara konsisten oleh OSIS MTs–MA <a href="https://alamin.id/osis" target="_blank" rel="noopener" class="text-primarymed font-semibold underline hover:text-primarydark hover-trigger">Pesantren Al Amin Mojokerto</a>, kompetisi ini dirancang untuk menguji kemampuan akademik sekaligus membentuk karakter siswa yang sportif dan berdaya saing tinggi.
+                </p>
+
+                <h2 class="font-heading text-2xl font-bold text-primarydark mt-10 mb-4">Mengapa Harus Mengikuti ALIES Al-Amin?</h2>
+                <ul class="list-disc pl-6 space-y-2 mb-8">
+                    <li><strong>Standar Soal Berkualitas:</strong> Menguji pemahaman konsep, logika, dan analisis siswa secara mendalam.</li>
+                    <li><strong>Pengembangan Karakter:</strong> Membentuk sikap sportif, jujur, dan berani berkompetisi secara sehat.</li>
+                    <li><strong>Sertifikat & Penghargaan:</strong> Setiap peserta mendapatkan sertifikat resmi, serta trofi bagi para pemenang.</li>
+                </ul>
+
+                <h2 class="font-heading text-2xl font-bold text-primarydark mt-10 mb-4">Cabang Lomba dari Al Amin</h2>
+                <ol class="list-decimal pl-6 space-y-3 mb-8">
+                    <li><strong>Ilmu Pengetahuan Alam (IPA):</strong> Menguji analisis fenomena alam dan pemahaman sains dasar.</li>
+                    <li><strong>Matematika:</strong> Mengasah logika berpikir, ketepatan, dan kecepatan berhitung.</li>
+                    <li><strong>Bahasa Inggris:</strong> Melatih penguasaan <em>grammar</em>, <em>vocabulary</em>, dan pemahaman bacaan.</li>
+                    <li><strong>Bahasa Arab:</strong> Menguji kemampuan mufradat, qawaid, serta pemahaman teks bahasa Arab.</li>
+                </ol>
+
+                <h2 class="font-heading text-2xl font-bold text-primarydark mt-10 mb-4">Cara Mendaftar</h2>
+                <ol class="list-decimal pl-6 space-y-2 mb-8">
+                    <li>Kunjungi portal resmi pendaftaran di <a href="https://alies.alamin.id" target="_blank" rel="noopener" class="text-primarymed font-semibold underline hover:text-primarydark hover-trigger">alies.alamin.id</a>.</li>
+                    <li>Isi formulir pendaftaran dengan data diri siswa dan asal sekolah yang valid.</li>
+                    <li>Pilih cabang lomba yang ingin diikuti.</li>
+                    <li>Lakukan konfirmasi pembayaran melalui WhatsApp.</li>
+                </ol>
+            </div>
+        </article>
+
+    </main>
+
+    <!-- 13. FOOTER -->
+    <footer class="bg-primarydark text-white pt-16 pb-12 border-t border-primarymed/40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
+                <div>
+                    <h3 class="font-heading text-xl font-extrabold mb-3">ALIES 2027</h3>
+                    <p class="text-sm text-softcream/80 leading-relaxed mb-4 max-w-sm">
+                        Al-Amin Intelligence of Elementary School. Ajang olimpiade pelajar tingkat SD/MI sederajat oleh OSIS MTs–MA Pesantren Al-Amin Mojokerto.
+                    </p>
+                    <div class="flex space-x-3">
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-accentgold hover:text-primarydark transition-smooth hover-trigger"><i class="fa-brands fa-instagram text-sm"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-accentgold hover:text-primarydark transition-smooth hover-trigger"><i class="fa-brands fa-whatsapp text-sm"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm text-softcream uppercase tracking-wider mb-4">Quick Links</h4>
+                    <ul class="space-y-2.5 text-sm">
+                        <li><a href="#home" class="text-softcream/80 hover:text-white transition-colors hover-trigger">Home</a></li>
+                        <li><a href="#about" class="text-softcream/80 hover:text-white transition-colors hover-trigger">About</a></li>
+                        <li><a href="#categories" class="text-softcream/80 hover:text-white transition-colors hover-trigger">Cabang Lomba</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-heading font-bold text-sm text-softcream uppercase tracking-wider mb-4">Location</h4>
+                    <p class="text-sm text-softcream/80 leading-relaxed">Pesantren Al-Amin<br>Mojokerto, Jawa Timur, Indonesia</p>
+                </div>
+            </div>
+            <div class="border-t border-primarymed/30 pt-8 flex flex-col sm:flex-row justify-between items-center text-xs text-softcream/70 gap-4">
+                <p>&copy; 2027 ALIES. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- REACT COMPONENTS (Full Implementation) -->
+    <script type="text/babel">
+        const { useState } = React;
+
+        // 1. FAQ Component
+        const FAQAccordion = () => {
+            const faqData = [
+                { question: "Siapa yang dapat mengikuti ALIES?", answer: "Peserta tingkat SD/MI sederajat sesuai dengan ketentuan dan persyaratan teknis panitia penyelenggara." },
+                { question: "Apa saja cabang lombanya?", answer: "Cabang lomba yang dilombakan meliputi IPA, Matematika, Bahasa Inggris, dan Bahasa Arab." },
+                { question: "Bagaimana cara mendaftar?", answer: "Klik tombol “Daftar Sekarang” yang tersedia di website ini dan ikuti formulir pendaftaran serta petunjuk selanjutnya." },
+                { question: "Bagaimana jika mengalami kendala?", answer: "Hubungi Customer Service melalui kontak WhatsApp, Instagram, atau Email resmi yang tertera pada bagian bawah halaman." }
+            ];
+
+            const [openIndices, setOpenIndices] = useState([]);
+
+            const toggleAccordion = (index) => {
+                if (openIndices.includes(index)) {
+                    setOpenIndices(openIndices.filter(i => i !== index));
+                } else {
+                    setOpenIndices([...openIndices, index]);
+                }
+            };
+
+            return (
+                <div className="space-y-4">
+                    {faqData.map((item, index) => {
+                        const isOpen = openIndices.includes(index);
+                        return (
+                            <div key={index} className="bg-white rounded-2xl border border-primarymed/15 overflow-hidden shadow-sm hover-trigger cursor-none">
+                                <button 
+                                    onClick={() => toggleAccordion(index)}
+                                    className="w-full px-6 py-5 text-left font-heading font-bold text-primarydark flex justify-between items-center focus:outline-none"
+                                >
+                                    <span>{item.question}</span>
+                                    <i className={`fa-solid fa-chevron-down text-sm transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}></i>
+                                </button>
+                                {isOpen && (
+                                    <div className="px-6 pb-5 text-sm text-charcoalgrey/80 leading-relaxed border-t border-gray-100 pt-3">
+                                        {item.answer}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+            );
+        };
+
+        // 2. Contact Form Component
+        const ContactForm = () => {
+            const [formData, setFormData] = useState({
+                name: '', email: '', whatsapp: '', school: '', message: ''
+            });
+            const [touched, setTouched] = useState({});
+            const [isSuccess, setIsSuccess] = useState(false);
+
+            const validate = (data) => {
+                const errors = {};
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                const waRegex = /^[0-9]{10,15}$/;
+
+                if (!data.name.trim()) errors.name = "Nama lengkap wajib diisi.";
+                if (!emailRegex.test(data.email.trim())) errors.email = "Masukkan alamat email yang valid.";
+                if (!waRegex.test(data.whatsapp.trim())) errors.whatsapp = "Nomor WhatsApp minimal 10 digit angka.";
+                if (!data.school.trim()) errors.school = "Asal sekolah wajib diisi.";
+                if (data.message.trim().length < 10) errors.message = "Pesan minimal berisi 10 karakter.";
+                return errors;
+            };
+
+            const errors = validate(formData);
+
+            const handleChange = (e) => {
+                const { name, value } = e.target;
+                setFormData(prev => ({ ...prev, [name]: value }));
+            };
+
+            const handleBlur = (e) => {
+                const { name } = e.target;
+                setTouched(prev => ({ ...prev, [name]: true }));
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setTouched({ name: true, email: true, whatsapp: true, school: true, message: true });
+
+                if (Object.keys(errors).length === 0) {
+                    setIsSuccess(true);
+                    setFormData({ name: '', email: '', whatsapp: '', school: '', message: '' });
+                    setTouched({});
+                    setTimeout(() => setIsSuccess(false), 6000);
+                }
+            };
+
+            return (
+                <div className="bg-white rounded-3xl p-8 sm:p-12 shadow-xl shadow-primarydark/5 border border-primarymed/15 relative">
+                    {isSuccess && (
+                        <div className="mb-6 p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-sm font-medium flex items-center gap-3">
+                            <i className="fa-solid fa-circle-check text-primarymed text-lg"></i>
+                            <span>Pesan berhasil terkirim! Terima kasih telah menghubungi panitia ALIES 2027.</span>
+                        </div>
+                    )}
+
+                    <form onSubmit={handleSubmit} noValidate className="space-y-6">
+                        <div>
+                            <label htmlFor="name" className="block text-sm font-bold text-primarydark mb-2">Nama Lengkap</label>
+                            <input 
+                                type="text" id="name" name="name" 
+                                value={formData.name} onChange={handleChange} onBlur={handleBlur}
+                                placeholder="Masukkan nama lengkap" 
+                                className={`w-full px-4 py-3.5 rounded-xl border focus:outline-none focus:border-primarydark text-sm transition-smooth hover-trigger cursor-none ${touched.name && errors.name ? 'border-rose-500' : 'border-gray-200'}`}
+                            />
+                            {touched.name && errors.name && <p className="text-xs text-rose-500 mt-1.5">{errors.name}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-bold text-primarydark mb-2">Email</label>
+                            <input 
+                                type="email" id="email" name="email" 
+                                value={formData.email} onChange={handleChange} onBlur={handleBlur}
+                                placeholder="nama@example.com" 
+                                className={`w-full px-4 py-3.5 rounded-xl border focus:outline-none focus:border-primarydark text-sm transition-smooth hover-trigger cursor-none ${touched.email && errors.email ? 'border-rose-500' : 'border-gray-200'}`}
+                            />
+                            {touched.email && errors.email && <p className="text-xs text-rose-500 mt-1.5">{errors.email}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="whatsapp" className="block text-sm font-bold text-primarydark mb-2">Nomor WhatsApp</label>
+                            <input 
+                                type="tel" id="whatsapp" name="whatsapp" 
+                                value={formData.whatsapp} onChange={handleChange} onBlur={handleBlur}
+                                placeholder="08xxxxxxxxxx" 
+                                className={`w-full px-4 py-3.5 rounded-xl border focus:outline-none focus:border-primarydark text-sm transition-smooth hover-trigger cursor-none ${touched.whatsapp && errors.whatsapp ? 'border-rose-500' : 'border-gray-200'}`}
+                            />
+                            {touched.whatsapp && errors.whatsapp && <p className="text-xs text-rose-500 mt-1.5">{errors.whatsapp}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="school" className="block text-sm font-bold text-primarydark mb-2">Asal Sekolah</label>
+                            <input 
+                                type="text" id="school" name="school" 
+                                value={formData.school} onChange={handleChange} onBlur={handleBlur}
+                                placeholder="Nama SD / MI Sederajat" 
+                                className={`w-full px-4 py-3.5 rounded-xl border focus:outline-none focus:border-primarydark text-sm transition-smooth hover-trigger cursor-none ${touched.school && errors.school ? 'border-rose-500' : 'border-gray-200'}`}
+                            />
+                            {touched.school && errors.school && <p className="text-xs text-rose-500 mt-1.5">{errors.school}</p>}
+                        </div>
+
+                        <div>
+                            <label htmlFor="message" className="block text-sm font-bold text-primarydark mb-2">Pesan</label>
+                            <textarea 
+                                id="message" name="message" rows="4" 
+                                value={formData.message} onChange={handleChange} onBlur={handleBlur}
+                                placeholder="Tuliskan pertanyaan atau pesan Anda..." 
+                                className={`w-full px-4 py-3.5 rounded-xl border focus:outline-none focus:border-primarydark text-sm transition-smooth resize-none hover-trigger cursor-none ${touched.message && errors.message ? 'border-rose-500' : 'border-gray-200'}`}
+                            ></textarea>
+                            {touched.message && errors.message && <p className="text-xs text-rose-500 mt-1.5">{errors.message}</p>}
+                        </div>
+
+                        <button type="submit" className="w-full py-4 bg-primarydark text-white font-bold rounded-xl shadow-md hover:bg-primarymed transition-smooth hover-trigger cursor-none">
+                            Kirim Pesan
+                        </button>
+                    </form>
+                </div>
+            );
+        };
+
+        // Render Components
+        ReactDOM.createRoot(document.getElementById('faq-react-root')).render(<FAQAccordion />);
+        ReactDOM.createRoot(document.getElementById('contact-react-root')).render(<ContactForm />);
+    </script>
+
+    <!-- GSAP & LOGIKA VANILLA JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script>
+        // 1. Lenis Smooth Scroll Setup
+        const lenis = new Lenis({
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), 
+            direction: 'vertical',
+            gestureDirection: 'vertical',
+            smooth: true,
+            mouseMultiplier: 1,
+            smoothTouch: false,
+            touchMultiplier: 2,
+        });
+
+        function raf(time) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+        requestAnimationFrame(raf);
+
+        // 2. Custom Cursor & Magnetic Elements (Desktop Only)
+        const cursor = document.getElementById('custom-cursor');
+        
+        if (window.matchMedia("(pointer: fine)").matches) {
+            document.addEventListener('mousemove', (e) => {
+                cursor.style.left = e.clientX + 'px';
+                cursor.style.top = e.clientY + 'px';
+            });
+
+            // Delegate hover events dynamically to cover React elements
+            document.body.addEventListener('mouseover', (e) => {
+                if(e.target.closest('.hover-trigger') || e.target.closest('a') || e.target.closest('button')) {
+                    cursor.classList.add('hovered');
+                }
+            });
+            document.body.addEventListener('mouseout', (e) => {
+                if(e.target.closest('.hover-trigger') || e.target.closest('a') || e.target.closest('button')) {
+                    cursor.classList.remove('hovered');
+                }
+            });
+
+            const magneticElements = document.querySelectorAll('.magnetic-element');
+            magneticElements.forEach(elem => {
+                elem.addEventListener('mousemove', (e) => {
+                    const rect = elem.getBoundingClientRect();
+                    const strength = elem.getAttribute('data-magnetic-strength') || 20;
+                    const x = ((e.clientX - rect.left) / rect.width - 0.5) * strength;
+                    const y = ((e.clientY - rect.top) / rect.height - 0.5) * strength;
+                    gsap.to(elem, { x: x, y: y, duration: 0.5, ease: 'power2.out' });
+                });
+                elem.addEventListener('mouseleave', () => {
+                    gsap.to(elem, { x: 0, y: 0, duration: 0.7, ease: 'elastic.out(1, 0.3)' });
+                });
+            });
+        }
+
+        // 3. Preloader & GSAP Initialization
+        gsap.registerPlugin(ScrollTrigger);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0);
+
+        window.addEventListener('load', () => {
+            const tl = gsap.timeline();
+            tl.to("#loader-bar", { width: "100%", duration: 1, ease: "power3.inOut" })
+              .to("#loader-heading", { y: -100, opacity: 0, duration: 0.6, ease: "power2.in" })
+              .to("#preloader", { yPercent: -100, duration: 0.8, ease: "power4.inOut" }, "-=0.3")
+              .to(".hero-elem", { autoAlpha: 1, y: 0, duration: 1, stagger: 0.15, ease: "power3.out", startAt: { y: 40, autoAlpha: 0 } }, "-=0.2")
+              .to(".hero-visual", { autoAlpha: 1, scale: 1, duration: 1.2, ease: "back.out(1.5)", startAt: { scale: 0.85, autoAlpha: 0 } }, "-=0.8");
+        });
+
+        // 4. Scroll Animations (Parallax & Reveal)
+        gsap.utils.toArray('.hero-parallax').forEach(layer => {
+            const speed = layer.getAttribute('data-speed');
+            gsap.to(layer, {
+                y: () => (ScrollTrigger.maxScroll(window) * speed),
+                ease: "none",
+                scrollTrigger: { trigger: "#home", start: "top top", end: "bottom top", scrub: true }
+            });
+        });
+
+        gsap.to(".about-content", { scrollTrigger: { trigger: "#about", start: "top 75%" }, autoAlpha: 1, x: 0, duration: 1, startAt: { x: -40, autoAlpha: 0 }, ease: "power2.out" });
+        gsap.to(".about-card", { scrollTrigger: { trigger: "#about", start: "top 75%" }, autoAlpha: 1, x: 0, duration: 1, startAt: { x: 40, autoAlpha: 0 }, ease: "power2.out", delay: 0.2 });
+        gsap.to(".values-header", { scrollTrigger: { trigger: ".values-header", start: "top 80%" }, autoAlpha: 1, y: 0, duration: 0.8, startAt: { y: 25, autoAlpha: 0 } });
+        gsap.to(".value-card", { scrollTrigger: { trigger: ".values-header", start: "top 75%" }, autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, startAt: { y: 30, autoAlpha: 0 }, ease: "power2.out" });
+        gsap.to(".cat-header", { scrollTrigger: { trigger: ".cat-header", start: "top 80%" }, autoAlpha: 1, y: 0, duration: 0.8, startAt: { y: 25, autoAlpha: 0 } });
+        gsap.to(".cat-card", { scrollTrigger: { trigger: ".cat-header", start: "top 75%" }, autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.12, startAt: { y: 35, autoAlpha: 0 }, ease: "power2.out" });
+        gsap.to(".benefit-header", { scrollTrigger: { trigger: ".benefit-header", start: "top 80%" }, autoAlpha: 1, y: 0, duration: 0.8, startAt: { y: 25, autoAlpha: 0 } });
+        gsap.to(".benefit-card", { scrollTrigger: { trigger: ".benefit-header", start: "top 75%" }, autoAlpha: 1, y: 0, duration: 0.8, stagger: 0.1, startAt: { y: 30, autoAlpha: 0 }, ease: "power2.out" });
+        gsap.to(".gallery-header", { scrollTrigger: { trigger: ".gallery-header", start: "top 80%" }, autoAlpha: 1, y: 0, duration: 0.8, startAt: { y: 25, autoAlpha: 0 } });
+        gsap.to(".gallery-item", { scrollTrigger: { trigger: ".gallery-header", start: "top 75%" }, autoAlpha: 1, scale: 1, duration: 0.8, stagger: 0.15, startAt: { scale: 0.95, autoAlpha: 0 }, ease: "power2.out" });
+        gsap.to(".faq-header", { scrollTrigger: { trigger: ".faq-header", start: "top 80%" }, autoAlpha: 1, y: 0, duration: 0.8, startAt: { y: 25, autoAlpha: 0 } });
+        gsap.to(".faq-list", { scrollTrigger: { trigger: ".faq-header", start: "top 75%" }, autoAlpha: 1, y: 0, duration: 0.8, startAt: { y: 30, autoAlpha: 0 }, ease: "power2.out" });
+
+        // 5. Navbar & Mobile Menu
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.remove('navbar-transparent');
+                navbar.classList.add('navbar-scrolled');
+            } else {
+                navbar.classList.remove('navbar-scrolled');
+                navbar.classList.add('navbar-transparent');
+            }
+        });
+
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const mobileIcon = mobileMenuBtn.querySelector('i');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            if (mobileMenu.classList.contains('hidden')) {
+                mobileIcon.classList.remove('fa-xmark');
+                mobileIcon.classList.add('fa-bars');
+            } else {
+                mobileIcon.classList.remove('fa-bars');
+                mobileIcon.classList.add('fa-xmark');
+            }
+        });
+
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileIcon.classList.remove('fa-xmark');
+                mobileIcon.classList.add('fa-bars');
+            });
+        });
+    </script>
+</body>
+</html>
